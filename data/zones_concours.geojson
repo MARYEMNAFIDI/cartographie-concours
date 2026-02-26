@@ -1,0 +1,107 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "ZC-001",
+        "zone_name": "Zone Agadir"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.72,
+              30.33
+            ],
+            [
+              -9.45,
+              30.33
+            ],
+            [
+              -9.45,
+              30.53
+            ],
+            [
+              -9.72,
+              30.53
+            ],
+            [
+              -9.72,
+              30.33
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "ZC-002",
+        "zone_name": "Zone Marrakech"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.12,
+              31.52
+            ],
+            [
+              -7.86,
+              31.52
+            ],
+            [
+              -7.86,
+              31.75
+            ],
+            [
+              -8.12,
+              31.75
+            ],
+            [
+              -8.12,
+              31.52
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "ZC-003",
+        "zone_name": "Zone Meknes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.7,
+              33.78
+            ],
+            [
+              -5.39,
+              33.78
+            ],
+            [
+              -5.39,
+              34.0
+            ],
+            [
+              -5.7,
+              34.0
+            ],
+            [
+              -5.7,
+              33.78
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

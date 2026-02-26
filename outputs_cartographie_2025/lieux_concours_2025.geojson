@@ -1,0 +1,236 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.5321582,
+          33.8984131
+        ]
+      },
+      "properties": {
+        "LIEU": "HARAS NATIONAL DE MEKNES",
+        "nb_journees": 7,
+        "nb_evenements": 7,
+        "nb_types_concours": 3,
+        "date_debut": "2025-06-09",
+        "date_fin": "2025-06-19",
+        "nb_chevaux_uniques": 1063,
+        "note_globale_moyenne": 77.16,
+        "nb_lignes_detail": 11175
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.4767251,
+          33.2440832
+        ]
+      },
+      "properties": {
+        "LIEU": "HARAS NATIONAL D EL JADIDA",
+        "nb_journees": 5,
+        "nb_evenements": 5,
+        "nb_types_concours": 5,
+        "date_debut": "2025-06-28",
+        "date_fin": "2025-07-26",
+        "nb_chevaux_uniques": 728,
+        "note_globale_moyenne": 169.85,
+        "nb_lignes_detail": 11110
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.1610294,
+          33.781005
+        ]
+      },
+      "properties": {
+        "LIEU": "HARAS NATIONAL DE BOUZNIKA",
+        "nb_journees": 3,
+        "nb_evenements": 3,
+        "nb_types_concours": 3,
+        "date_debut": "2025-07-05",
+        "date_fin": "2025-07-07",
+        "nb_chevaux_uniques": 711,
+        "note_globale_moyenne": 80.31,
+        "nb_lignes_detail": 7595
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.9891608,
+          31.6258257
+        ]
+      },
+      "properties": {
+        "LIEU": "HARAS NATIONAL DE MARRAKECH",
+        "nb_journees": 3,
+        "nb_evenements": 3,
+        "nb_types_concours": 3,
+        "date_debut": "2025-06-21",
+        "date_fin": "2025-06-24",
+        "nb_chevaux_uniques": 499,
+        "note_globale_moyenne": 84.56,
+        "nb_lignes_detail": 5370
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.929306,
+          34.677874
+        ]
+      },
+      "properties": {
+        "LIEU": "HARAS NATIONAL D OUJDA",
+        "nb_journees": 2,
+        "nb_evenements": 2,
+        "nb_types_concours": 2,
+        "date_debut": "2025-07-17",
+        "date_fin": "2025-07-18",
+        "nb_chevaux_uniques": 359,
+        "note_globale_moyenne": 55.22,
+        "nb_lignes_detail": 3590
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.7470785,
+          32.4212148
+        ]
+      },
+      "properties": {
+        "LIEU": "FQUIH BEN SALAH",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-07-11",
+        "date_fin": "2025-07-11",
+        "nb_chevaux_uniques": 293,
+        "note_globale_moyenne": 45.01,
+        "nb_lignes_detail": 2930
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -9.084263,
+          32.108297
+        ]
+      },
+      "properties": {
+        "LIEU": "CPEE DE SEBT GZOULA",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-06-05",
+        "date_fin": "2025-06-05",
+        "nb_chevaux_uniques": 219,
+        "note_globale_moyenne": 55.49,
+        "nb_lignes_detail": 2190
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.352345,
+          34.225576
+        ]
+      },
+      "properties": {
+        "LIEU": "CPEE DE GUERCIF",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-07-20",
+        "date_fin": "2025-07-20",
+        "nb_chevaux_uniques": 206,
+        "note_globale_moyenne": 49.78,
+        "nb_lignes_detail": 2060
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.992578,
+          33.047057
+        ]
+      },
+      "properties": {
+        "LIEU": "CPEE DE MISSOUR",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-07-23",
+        "date_fin": "2025-07-23",
+        "nb_chevaux_uniques": 159,
+        "note_globale_moyenne": 50.91,
+        "nb_lignes_detail": 1590
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.025809,
+          34.0163901
+        ]
+      },
+      "properties": {
+        "LIEU": "CPEE DE AIN BENI MATHAR",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-07-15",
+        "date_fin": "2025-07-15",
+        "nb_chevaux_uniques": 146,
+        "note_globale_moyenne": 48.68,
+        "nb_lignes_detail": 1460
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -9.5838532,
+          30.4205162
+        ]
+      },
+      "properties": {
+        "LIEU": "AGADIR",
+        "nb_journees": 1,
+        "nb_evenements": 1,
+        "nb_types_concours": 1,
+        "date_debut": "2025-06-03",
+        "date_fin": "2025-06-03",
+        "nb_chevaux_uniques": 115,
+        "note_globale_moyenne": 58.68,
+        "nb_lignes_detail": 1150
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+Nettoyage leger + valorisation lieux concours SOREC 2025
+
+source_file: C:\Users\pc gold\Downloads\Résultats_des_concours_toutes_races (2)\VF Détail Notation par Juge 2025 V2.xlsx
+rows_cleaned: 50220
+event_rows_unique: 26
+lieux_uniques: 11
+lieux_geocodes: 11/11
+date_min: 2025-06-03
+date_max: 2025-07-26

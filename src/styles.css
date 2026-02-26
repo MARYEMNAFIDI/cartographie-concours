@@ -1,0 +1,384 @@
+:root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-root {
+  min-height: 100vh;
+  width: 100%;
+  padding: 18px 16px 24px;
+  background: #f8fafc;
+}
+
+.page-frame {
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.map-toolbar {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.map-card {
+  width: 100%;
+  height: 72vh;
+  min-height: 520px;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.filter-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.filter-input {
+  margin-top: 6px;
+  width: 280px;
+  max-width: 42vw;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.filter-and-legend {
+  margin-top: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-and-legend .filter-input {
+  margin-top: 0;
+}
+
+.toolbar-color-legend {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #f8fafc;
+  display: grid;
+  gap: 5px;
+}
+
+.toolbar-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #334155;
+}
+
+.legend-swatch-mini {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.legend-swatch-mini-blue {
+  background: #2563eb;
+  border: 1px solid #1e3a8a;
+}
+
+.legend-swatch-mini-red {
+  background: #ef4444;
+  border: 1px solid #7f1d1d;
+}
+
+.legend-horse-badge {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #b45309;
+  background: #fef3c7;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.toggle-inline {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.toggle-inline input {
+  width: 15px;
+  height: 15px;
+}
+
+.filter-select {
+  margin-top: 6px;
+  width: 280px;
+  max-width: 42vw;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: #ffffff;
+  outline: none;
+}
+
+.filter-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.view-toggle-btn {
+  width: 280px;
+  max-width: 42vw;
+  border: 1px solid #1d4ed8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.view-toggle-btn:hover {
+  background: #1d4ed8;
+}
+
+.view-current {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #334155;
+}
+
+.toggle-label input {
+  width: 16px;
+  height: 16px;
+}
+
+.map-shell {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-feedback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  background: #eef2ff;
+  color: #1e293b;
+}
+
+.map-error {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.map-overlay-error {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 20;
+  background: rgba(220, 38, 38, 0.92);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  max-width: 420px;
+  font-size: 14px;
+}
+
+.map-overlay-error-secondary {
+  bottom: 72px;
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.map-overlay-error-tertiary {
+  bottom: 128px;
+  background: rgba(71, 85, 105, 0.92);
+}
+
+.map-overlay-legend {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
+  min-width: 150px;
+}
+
+.legend-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.legend-dot-barbe {
+  background: #ef4444;
+  border: 1px solid #7f1d1d;
+}
+
+.legend-dot-arbe {
+  background: #2563eb;
+  border: 1px solid #1e3a8a;
+}
+
+.info-window {
+  min-width: 180px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.leaflet-popup-content-custom {
+  min-width: 180px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.dist-line {
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dist-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.dist-chip-ar {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.dist-chip-arbe {
+  background: #dbeafe;
+  color: #1e3a8a;
+  border: 1px solid #93c5fd;
+}
+
+.horse-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.horse-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #fef3c7;
+  border: 2px solid #b45309;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.elite-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.elite-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fef9c3;
+  border: 2px solid #ca8a04;
+  color: #92400e;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 900px) {
+  .map-card {
+    height: 68vh;
+    min-height: 420px;
+  }
+}
