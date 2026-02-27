@@ -140,6 +140,24 @@ function roundRatioToInteger(value: number): number {
   return decimalPart >= 0.5 ? Math.ceil(value) : Math.floor(value);
 }
 
+function splitRaceReference(value: string): string[] {
+  return value
+    .split(/[\/|,]+/)
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function getRaceChipMeta(raceValue: string): { label: string; className: string } {
+  const race = raceValue.trim().toUpperCase();
+  if (race === "ARBE" || race.includes("ARABE BARBE")) {
+    return { label: "ARABE BARBE", className: "dist-chip-arbe" };
+  }
+  if (race === "BARBE") {
+    return { label: "BARBE", className: "dist-chip-ar" };
+  }
+  return { label: raceValue.trim(), className: "dist-chip" };
+}
+
 function buildHarasRatioPoints(lieux: LieuPoint[]): HarasRatioPoint[] {
   return HARAS_REFERENCE.map((item) => {
     const match = lieux.find((lieu) => normalizeKey(lieu.lieuNom).includes(item.token));
@@ -586,7 +604,20 @@ export default function ZonesMap({
                   {lieu.raceReference && (
                     <>
                       <br />
-                      <strong>Race:</strong> {lieu.raceReference}
+                      <strong>Race:</strong>
+                      <div className="dist-line">
+                        {splitRaceReference(lieu.raceReference).map((racePart, index) => {
+                          const raceMeta = getRaceChipMeta(racePart);
+                          return (
+                            <span
+                              key={`${lieu.lieuId}-race-${raceMeta.label}-${index}`}
+                              className={`dist-chip ${raceMeta.className}`}
+                            >
+                              {raceMeta.label}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </>
                   )}
                   {typeof lieu.nbLignesAr === "number" && typeof lieu.nbLignesArbe === "number" && (
@@ -601,12 +632,6 @@ export default function ZonesMap({
                           ARBE: {lieu.nbLignesArbe} ({formatPct(lieu.partArbePct)})
                         </span>
                       </div>
-                    </>
-                  )}
-                  {lieu.couvertureConcours && (
-                    <>
-                      <br />
-                      <strong>Couverture:</strong> {lieu.couvertureConcours}
                     </>
                   )}
                   <>
