@@ -130,6 +130,11 @@ body,
   border: 1px solid #7f1d1d;
 }
 
+.legend-swatch-mini-amber {
+  background: #f97316;
+  border: 1px solid #9a3412;
+}
+
 .legend-horse-badge {
   width: 18px;
   height: 18px;
@@ -269,6 +274,12 @@ body,
   min-width: 150px;
 }
 
+.map-overlay-legend-haras {
+  max-width: 360px;
+  max-height: 48vh;
+  overflow-y: auto;
+}
+
 .legend-title {
   font-size: 12px;
   font-weight: 700;
@@ -281,6 +292,11 @@ body,
   gap: 8px;
   font-size: 12px;
   margin-top: 4px;
+}
+
+.legend-row-wide {
+  align-items: flex-start;
+  line-height: 1.35;
 }
 
 .legend-dot {
@@ -298,6 +314,11 @@ body,
 .legend-dot-arbe {
   background: #2563eb;
   border: 1px solid #1e3a8a;
+}
+
+.legend-dot-haras {
+  background: #f97316;
+  border: 1px solid #9a3412;
 }
 
 .info-window {
@@ -374,6 +395,28 @@ body,
   font-size: 12px;
   font-weight: 700;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.haras-tooltip {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #fdba74;
+  border-radius: 6px;
+  color: #0f172a;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  padding: 0;
+}
+
+.haras-tooltip-content {
+  padding: 4px 6px;
+  font-size: 11px;
+  line-height: 1.2;
+  max-width: 110px;
+  white-space: normal;
+}
+
+.ratio-red {
+  color: #b91c1c;
+  font-weight: 700;
 }
 
 @media (max-width: 900px) {

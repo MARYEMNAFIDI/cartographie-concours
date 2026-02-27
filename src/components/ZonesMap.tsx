@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { divIcon, type Layer, type LeafletMouseEvent, type PathOptions } from "leaflet";
-import { CircleMarker, GeoJSON, MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import {
+  CircleMarker,
+  GeoJSON,
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import { buildBoundsFromGeoJson, buildBoundsFromPoints, mergeBounds } from "../utils/bounds";
 import { loadEliteCsv, type EliteHorsePoint } from "../utils/elite";
 import { loadZonesGeoJson, type ZoneGeoJson, type ZoneGeoJsonFeature } from "../utils/geojson";
@@ -8,7 +17,7 @@ import { loadLieuxCsv, type LieuPoint } from "../utils/lieux";
 
 type ZonesMapProps = {
   showZones: boolean;
-  mapView: "lieux" | "elite_regions";
+  mapView: "lieux" | "elite_regions" | "haras_etalons";
   showElitePoints: boolean;
   geoJsonUrl: string;
   lieuxCsvUrl: string;
@@ -56,8 +65,99 @@ type JitteredElitePoint = EliteHorsePoint & {
   displayLongitude: number;
 };
 
+type HarasRatioPoint = {
+  harasId: string;
+  shortLabel: string;
+  harasName: string;
+  latitude: number;
+  longitude: number;
+  etalons: number;
+  palfreniersRepro: number;
+  ratioEtalonsParPalfrenier: number;
+  ratioPalfreniersParEtalon: number;
+};
+
+const HARAS_REFERENCE = [
+  {
+    harasId: "bouznika",
+    shortLabel: "BOUZNIKA",
+    token: "bouznika",
+    defaultName: "HARAS NATIONAL DE BOUZNIKA",
+    fallbackLatitude: 33.781005,
+    fallbackLongitude: -7.1610294,
+    etalons: 18,
+    palfreniersRepro: 9,
+  },
+  {
+    harasId: "eljadida",
+    shortLabel: "EL JADIDA",
+    token: "jadida",
+    defaultName: "HARAS NATIONAL D EL JADIDA",
+    fallbackLatitude: 33.2440832,
+    fallbackLongitude: -8.4767251,
+    etalons: 40,
+    palfreniersRepro: 11,
+  },
+  {
+    harasId: "meknes",
+    shortLabel: "MEKNES",
+    token: "meknes",
+    defaultName: "HARAS NATIONAL DE MEKNES",
+    fallbackLatitude: 33.8984131,
+    fallbackLongitude: -5.5321582,
+    etalons: 34,
+    palfreniersRepro: 14,
+  },
+  {
+    harasId: "marrakech",
+    shortLabel: "MARRAKECH",
+    token: "marrakech",
+    defaultName: "HARAS NATIONAL DE MARRAKECH",
+    fallbackLatitude: 31.6258257,
+    fallbackLongitude: -7.9891608,
+    etalons: 38,
+    palfreniersRepro: 12,
+  },
+  {
+    harasId: "oujda",
+    shortLabel: "OUJDA",
+    token: "oujda",
+    defaultName: "HARAS NATIONAL D OUJDA",
+    fallbackLatitude: 34.677874,
+    fallbackLongitude: -1.929306,
+    etalons: 28,
+    palfreniersRepro: 16,
+  },
+] as const;
+
 function normalizeKey(value: string): string {
   return value.trim().toLowerCase();
+}
+
+function roundRatioToInteger(value: number): number {
+  const truncated = Math.trunc(value);
+  const decimalPart = value - truncated;
+  return decimalPart >= 0.5 ? Math.ceil(value) : Math.floor(value);
+}
+
+function buildHarasRatioPoints(lieux: LieuPoint[]): HarasRatioPoint[] {
+  return HARAS_REFERENCE.map((item) => {
+    const match = lieux.find((lieu) => normalizeKey(lieu.lieuNom).includes(item.token));
+    const etalons = item.etalons;
+    const palfreniersRepro = item.palfreniersRepro;
+
+    return {
+      harasId: item.harasId,
+      shortLabel: item.shortLabel,
+      harasName: match?.lieuNom ?? item.defaultName,
+      latitude: match?.latitude ?? item.fallbackLatitude,
+      longitude: match?.longitude ?? item.fallbackLongitude,
+      etalons,
+      palfreniersRepro,
+      ratioEtalonsParPalfrenier: palfreniersRepro > 0 ? etalons / palfreniersRepro : 0,
+      ratioPalfreniersParEtalon: etalons > 0 ? palfreniersRepro / etalons : 0,
+    };
+  }).sort((a, b) => b.etalons - a.etalons);
 }
 
 function buildJitteredElitePoints(points: EliteHorsePoint[]): JitteredElitePoint[] {
@@ -356,6 +456,17 @@ export default function ZonesMap({
     });
   }, [lieuFilter, elitePoints, lieuxByName]);
 
+  const filteredHaras = useMemo(() => {
+    const term = lieuFilter.trim().toLowerCase();
+    const allHaras = buildHarasRatioPoints(lieux);
+    if (!term) {
+      return allHaras;
+    }
+    return allHaras.filter((haras) =>
+      `${haras.shortLabel} ${haras.harasName}`.toLowerCase().includes(term),
+    );
+  }, [lieuFilter, lieux]);
+
   const eliteRegionPoints = useMemo(
     () => aggregateEliteByRegion(filteredElite, lieuxByName),
     [filteredElite, lieuxByName],
@@ -382,12 +493,18 @@ export default function ZonesMap({
         })),
       ];
     }
+    if (mapView === "haras_etalons") {
+      return filteredHaras.map((item) => ({
+        latitude: item.latitude,
+        longitude: item.longitude,
+      }));
+    }
 
     return filteredLieux.map((item) => ({
       latitude: item.latitude,
       longitude: item.longitude,
     }));
-  }, [mapView, filteredLieux, eliteRegionPoints, jitteredElitePoints, showElitePoints]);
+  }, [mapView, filteredHaras, filteredLieux, eliteRegionPoints, jitteredElitePoints, showElitePoints]);
 
   const onEachFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     const zoneFeature = feature as unknown as ZoneGeoJsonFeature;
@@ -545,6 +662,52 @@ export default function ZonesMap({
             );
           })}
 
+        {mapView === "haras_etalons" &&
+          filteredHaras.map((haras) => (
+            <CircleMarker
+              key={`haras-${haras.harasId}`}
+              center={[haras.latitude, haras.longitude]}
+              radius={10 + Math.sqrt(haras.etalons) * 1.65}
+              pathOptions={{
+                color: "#9a3412",
+                weight: 2,
+                fillColor: "#f97316",
+                fillOpacity: 0.8,
+              }}
+            >
+              <Tooltip permanent direction="top" offset={[0, -8]} className="haras-tooltip">
+                <div className="haras-tooltip-content">
+                  <strong>{haras.shortLabel}</strong>
+                  <br />
+                  Etalons: {haras.etalons}
+                  <br />
+                  Palfreniers: {haras.palfreniersRepro}
+                  <br />
+                  <span className="ratio-red">
+                    E/p: {roundRatioToInteger(haras.ratioEtalonsParPalfrenier)}
+                  </span>
+                </div>
+              </Tooltip>
+              <Popup>
+                <div className="leaflet-popup-content-custom">
+                  <strong>Haras:</strong> {haras.harasName}
+                  <br />
+                  <strong>Etalons:</strong> {haras.etalons}
+                  <br />
+                  <strong>Palfreniers (repro):</strong> {haras.palfreniersRepro}
+                  <br />
+                  <strong>Ratio Etalons / Palfrenier:</strong>{" "}
+                  {roundRatioToInteger(haras.ratioEtalonsParPalfrenier)}
+                  <br />
+                  <strong>Ratio Palfrenier / Etalon:</strong>{" "}
+                  {roundRatioToInteger(haras.ratioPalfreniersParEtalon)}
+                  <br />
+                  <strong>Periode:</strong> 2025 seulement
+                </div>
+              </Popup>
+            </CircleMarker>
+          ))}
+
         <FitBounds geojson={showZones ? geojson : null} points={fitPoints} enabled />
       </MapContainer>
 
@@ -566,6 +729,18 @@ export default function ZonesMap({
             <span className="legend-dot legend-dot-arbe" />
             ARABE BARBE
           </div>
+        </div>
+      )}
+      {mapView === "haras_etalons" && (
+        <div className="map-overlay-legend map-overlay-legend-haras">
+          <div className="legend-title">5 haras: effectif et ratio palfrenier</div>
+          {filteredHaras.map((haras) => (
+            <div key={`legend-haras-${haras.harasId}`} className="legend-row legend-row-wide">
+              <span className="legend-dot legend-dot-haras" />
+              {haras.shortLabel}: {haras.etalons} etalons, P: {haras.palfreniersRepro},{" "}
+              <span className="ratio-red">E/p: {roundRatioToInteger(haras.ratioEtalonsParPalfrenier)}</span>
+            </div>
+          ))}
         </div>
       )}
     </div>
