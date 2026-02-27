@@ -17,6 +17,11 @@ export interface LieuPoint {
   partArbePct?: number;
   nbEvenementsAr?: number;
   nbEvenementsArbe?: number;
+  anneeReference?: string;
+  raceReference?: string;
+  harasOrganisateur?: string;
+  couvertureConcours?: string;
+  popupLabel?: string;
 }
 
 function parseCsvLine(line: string): string[] {
@@ -71,8 +76,11 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
   const hasDefaultSchema = ["lieu_id", "lieu_nom", "latitude", "longitude"].every((col) =>
     indexByName.has(col),
   );
+  const has2026Schema = ["annee", "cre_ville", "lat", "lon"].every((col) =>
+    indexByName.has(col),
+  );
 
-  if (!hasOrganizedSchema && !hasDefaultSchema) {
+  if (!hasOrganizedSchema && !hasDefaultSchema && !has2026Schema) {
     throw new Error("Lieux invalides: schema CSV non reconnu.");
   }
 
@@ -82,10 +90,14 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
     const fields = parseCsvLine(lines[i]);
 
     const latitude = Number(
-      fields[indexByName.get("latitude") ?? -1] ?? fields[indexByName.get("LATITUDE") ?? -1],
+      fields[indexByName.get("latitude") ?? -1] ??
+        fields[indexByName.get("LATITUDE") ?? -1] ??
+        fields[indexByName.get("lat") ?? -1],
     );
     const longitude = Number(
-      fields[indexByName.get("longitude") ?? -1] ?? fields[indexByName.get("LONGITUDE") ?? -1],
+      fields[indexByName.get("longitude") ?? -1] ??
+        fields[indexByName.get("LONGITUDE") ?? -1] ??
+        fields[indexByName.get("lon") ?? -1],
     );
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       continue;
@@ -132,6 +144,37 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
         partArbePct: Number.isFinite(partArbePct) ? partArbePct : undefined,
         nbEvenementsAr: Number.isFinite(nbEvenementsAr) ? nbEvenementsAr : undefined,
         nbEvenementsArbe: Number.isFinite(nbEvenementsArbe) ? nbEvenementsArbe : undefined,
+      });
+      continue;
+    }
+
+    if (has2026Schema) {
+      const ville = fields[indexByName.get("cre_ville") ?? -1] ?? "Ville inconnue";
+      const lieuOrg = fields[indexByName.get("lieu_organisation") ?? -1] ?? "";
+      const lieuNom = lieuOrg.trim() || ville;
+      const nbJournees = Number(fields[indexByName.get("nb_jours") ?? -1] ?? "");
+      const popupLabel = fields[indexByName.get("popup") ?? -1] ?? "";
+      const anneeReference = fields[indexByName.get("annee") ?? -1] ?? "";
+      const raceReference = fields[indexByName.get("race") ?? -1] ?? "";
+      const harasOrganisateur = fields[indexByName.get("haras_organisateur") ?? -1] ?? "";
+      const couvertureConcours =
+        fields[indexByName.get("couverture_concours_2026") ?? -1] ?? "";
+
+      out.push({
+        lieuId: `C26-${i}`,
+        lieuNom,
+        latitude,
+        longitude,
+        zoneId: "",
+        ville,
+        adresse: popupLabel || `${ville}, Maroc`,
+        nbConcours: 1,
+        nbJournees: Number.isFinite(nbJournees) ? nbJournees : undefined,
+        anneeReference: anneeReference || "2026",
+        raceReference: raceReference || undefined,
+        harasOrganisateur: harasOrganisateur || undefined,
+        couvertureConcours: couvertureConcours || undefined,
+        popupLabel: popupLabel || undefined,
       });
       continue;
     }

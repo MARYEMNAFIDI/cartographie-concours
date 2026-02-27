@@ -3,8 +3,6 @@ import ZonesMap from "./components/ZonesMap";
 
 type MapViewMode = "lieux" | "elite_regions" | "haras_etalons";
 
-const VIEW_ORDER: MapViewMode[] = ["lieux", "elite_regions", "haras_etalons"];
-
 const VIEW_LABELS: Record<MapViewMode, string> = {
   lieux: "Lieux de concours",
   elite_regions: "Repartition elites par region",
@@ -14,29 +12,56 @@ const VIEW_LABELS: Record<MapViewMode, string> = {
 export default function App() {
   const [lieuFilter, setLieuFilter] = useState("");
   const [mapView, setMapView] = useState<MapViewMode>("lieux");
+  const [lieuxYear, setLieuxYear] = useState<"2025" | "2026">("2025");
   const [showElitePoints, setShowElitePoints] = useState(true);
-  const currentViewIndex = VIEW_ORDER.indexOf(mapView);
-  const nextView = VIEW_ORDER[(currentViewIndex + 1) % VIEW_ORDER.length];
   const filterPlaceholder =
     mapView === "haras_etalons"
       ? "Ex: Bouznika, Meknes, Oujda..."
+      : mapView === "lieux" && lieuxYear === "2026"
+        ? "Ex: Marrakech, Agadir, Oujda..."
       : "Ex: Meknes, Oujda, Agadir, OUASSIMA...";
+  const lieuxCsvUrl =
+    mapView === "lieux" && lieuxYear === "2026"
+      ? "/concours_2026_leaflet_arabe_barbe_barbe.csv"
+      : "/lieux_concours_organises.csv";
 
   return (
     <div className="app-root">
       <div className="page-frame">
         <div className="map-toolbar">
-          <button
-            type="button"
-            className="view-toggle-btn"
-            onClick={() => setMapView(nextView)}
+          <label className="filter-label" htmlFor="map-view-select">
+            Choisir la vue
+          </label>
+          <select
+            id="map-view-select"
+            className="filter-select"
+            value={mapView}
+            onChange={(event) => setMapView(event.target.value as MapViewMode)}
           >
-            {`Basculer: ${VIEW_LABELS[nextView]}`}
-          </button>
+            <option value="lieux">{VIEW_LABELS.lieux}</option>
+            <option value="elite_regions">{VIEW_LABELS.elite_regions}</option>
+            <option value="haras_etalons">{VIEW_LABELS.haras_etalons}</option>
+          </select>
 
           <div className="view-current">
             Vue actuelle: <strong>{VIEW_LABELS[mapView]}</strong>
           </div>
+          {mapView === "lieux" && (
+            <>
+              <label className="filter-label" htmlFor="lieux-year-select">
+                Annee des lieux
+              </label>
+              <select
+                id="lieux-year-select"
+                className="filter-select"
+                value={lieuxYear}
+                onChange={(event) => setLieuxYear(event.target.value as "2025" | "2026")}
+              >
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+              </select>
+            </>
+          )}
 
           <label className="filter-label" htmlFor="lieu-filter">
             Filtrer (region/ville/lieu/cheval/haras)
@@ -90,7 +115,7 @@ export default function App() {
             mapView={mapView}
             showElitePoints={showElitePoints}
             geoJsonUrl="/zones_concours.geojson"
-            lieuxCsvUrl="/lieux_concours_organises.csv"
+            lieuxCsvUrl={lieuxCsvUrl}
             eliteCsvUrl="/chevaux_elite_2025.csv"
             lieuFilter={lieuFilter}
           />

@@ -438,7 +438,8 @@ export default function ZonesMap({
       return lieux;
     }
     return lieux.filter((lieu) => {
-      const haystack = `${lieu.lieuNom} ${lieu.ville} ${lieu.adresse}`.toLowerCase();
+      const haystack =
+        `${lieu.lieuNom} ${lieu.ville} ${lieu.adresse} ${lieu.harasOrganisateur ?? ""} ${lieu.anneeReference ?? ""} ${lieu.raceReference ?? ""}`.toLowerCase();
       return haystack.includes(term);
     });
   }, [lieuFilter, lieux]);
@@ -552,6 +553,18 @@ export default function ZonesMap({
               <Popup>
                 <div className="leaflet-popup-content-custom">
                   <strong>Lieu:</strong> {lieu.lieuNom}
+                  {lieu.popupLabel && (
+                    <>
+                      <br />
+                      <strong>Reference:</strong> {lieu.popupLabel}
+                    </>
+                  )}
+                  {lieu.harasOrganisateur && (
+                    <>
+                      <br />
+                      <strong>Haras organisateur:</strong> {lieu.harasOrganisateur}
+                    </>
+                  )}
                   {lieu.zoneId && (
                     <>
                       <br />
@@ -562,6 +575,18 @@ export default function ZonesMap({
                     <>
                       <br />
                       <strong>Concours organises:</strong> {lieu.nbConcours}
+                    </>
+                  )}
+                  {typeof lieu.nbJournees === "number" && (
+                    <>
+                      <br />
+                      <strong>Journees:</strong> {lieu.nbJournees}
+                    </>
+                  )}
+                  {lieu.raceReference && (
+                    <>
+                      <br />
+                      <strong>Race:</strong> {lieu.raceReference}
                     </>
                   )}
                   {typeof lieu.nbLignesAr === "number" && typeof lieu.nbLignesArbe === "number" && (
@@ -578,9 +603,15 @@ export default function ZonesMap({
                       </div>
                     </>
                   )}
+                  {lieu.couvertureConcours && (
+                    <>
+                      <br />
+                      <strong>Couverture:</strong> {lieu.couvertureConcours}
+                    </>
+                  )}
                   <>
                     <br />
-                    <strong>Periode:</strong> 2025 seulement
+                    <strong>Periode:</strong> {lieu.anneeReference || "2025"}
                   </>
                 </div>
               </Popup>
