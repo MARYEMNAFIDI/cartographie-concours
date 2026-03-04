@@ -24,6 +24,48 @@ export interface LieuPoint {
   popupLabel?: string;
 }
 
+function normalizeTextForMatch(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
+}
+
+function inferHarasOrganisateur(value: string): string | undefined {
+  const normalized = normalizeTextForMatch(value);
+
+  if (normalized.includes("BOUZNIKA")) {
+    return "Bouznika";
+  }
+  if (normalized.includes("EL JADIDA") || normalized.includes("JADIDA")) {
+    return "El Jadida";
+  }
+  if (
+    normalized.includes("OUJDA") ||
+    normalized.includes("GUERCIF") ||
+    normalized.includes("MISSOUR") ||
+    normalized.includes("AIN BENI MATHAR") ||
+    normalized.includes("AIN BNI MATHAR") ||
+    normalized.includes("JERADA")
+  ) {
+    return "Oujda";
+  }
+  if (normalized.includes("MEKNES") || normalized.includes("IFRANE") || normalized.includes("FES")) {
+    return "Meknes";
+  }
+  if (
+    normalized.includes("MARRAKECH") ||
+    normalized.includes("AGADIR") ||
+    normalized.includes("SEBT GZOULA") ||
+    normalized.includes("FQUIH BEN SALAH") ||
+    normalized.includes("FKIH BEN SALAH")
+  ) {
+    return "Marrakech";
+  }
+
+  return undefined;
+}
+
 function parseCsvLine(line: string): string[] {
   const fields: string[] = [];
   let current = "";
@@ -120,6 +162,7 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
       );
       const query = fields[indexByName.get("geocode_query") ?? -1] ?? "";
       const ville = query.includes(",") ? query.split(",")[0].trim() : lieuNom;
+      const harasOrganisateur = inferHarasOrganisateur(`${lieuNom} ${query}`);
 
       if (Number.isFinite(nbConcours) && nbConcours <= 0) {
         continue;
@@ -144,6 +187,7 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
         partArbePct: Number.isFinite(partArbePct) ? partArbePct : undefined,
         nbEvenementsAr: Number.isFinite(nbEvenementsAr) ? nbEvenementsAr : undefined,
         nbEvenementsArbe: Number.isFinite(nbEvenementsArbe) ? nbEvenementsArbe : undefined,
+        harasOrganisateur,
       });
       continue;
     }
@@ -156,7 +200,11 @@ export async function loadLieuxCsv(url: string): Promise<LieuPoint[]> {
       const popupLabel = fields[indexByName.get("popup") ?? -1] ?? "";
       const anneeReference = fields[indexByName.get("annee") ?? -1] ?? "";
       const raceReference = fields[indexByName.get("race") ?? -1] ?? "";
-      const harasOrganisateur = fields[indexByName.get("haras_organisateur") ?? -1] ?? "";
+      const harasOrganisateurRaw = fields[indexByName.get("haras_organisateur") ?? -1] ?? "";
+      const harasOrganisateur =
+        inferHarasOrganisateur(harasOrganisateurRaw) ??
+        inferHarasOrganisateur(`${ville} ${lieuNom}`) ??
+        harasOrganisateurRaw;
       const couvertureConcours =
         fields[indexByName.get("couverture_concours_2026") ?? -1] ?? "";
 

@@ -57,8 +57,17 @@ export async function loadZonesGeoJson(url: string): Promise<ZoneGeoJson> {
         type: "Feature" as const,
         properties: {
           ...properties,
-          zone_id: String(properties.zone_id ?? `zone-${index + 1}`),
-          zone_name: String(properties.zone_name ?? "Zone sans nom"),
+          zone_id: String(
+            properties.zone_id ?? properties.shapeISO ?? properties.shapeID ?? `zone-${index + 1}`,
+          ),
+          zone_name: String(
+            properties.zone_name ??
+              properties.zoneName ??
+              properties.shapeName ??
+              properties.nom ??
+              properties.NAME_1 ??
+              "Zone sans nom",
+          ),
         },
         geometry: {
           type: geometryType,

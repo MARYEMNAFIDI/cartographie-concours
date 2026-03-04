@@ -1,4 +1,3 @@
-import type { ZoneGeoJson } from "./geojson";
 import { latLngBounds, type LatLngBounds, type LatLngTuple } from "leaflet";
 
 function iterLatLngPairs(coords: unknown): LatLngTuple[] {
@@ -19,10 +18,14 @@ function iterLatLngPairs(coords: unknown): LatLngTuple[] {
   return coords.flatMap((item) => iterLatLngPairs(item));
 }
 
-export function buildBoundsFromGeoJson(geojson: ZoneGeoJson): LatLngBounds | null {
-  const points = geojson.features.flatMap((feature) =>
-    iterLatLngPairs(feature.geometry.coordinates),
-  );
+export function buildBoundsFromGeoJson(geojson: GeoJSON.FeatureCollection): LatLngBounds | null {
+  const points = geojson.features.flatMap((feature) => {
+    if (!feature || !feature.geometry) {
+      return [];
+    }
+    return iterLatLngPairs((feature.geometry as { coordinates?: unknown }).coordinates);
+  });
+
   if (points.length === 0) {
     return null;
   }
