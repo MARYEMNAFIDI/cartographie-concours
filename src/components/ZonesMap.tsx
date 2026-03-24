@@ -144,8 +144,8 @@ const HARAS_REFERENCE: readonly HarasReference[] = [
     defaultName: "HARAS NATIONAL DE MARRAKECH",
     fallbackLatitude: 31.6258257,
     fallbackLongitude: -7.9891608,
-    etalons: 38,
-    palfreniersRepro: 12,
+    etalons: 19,
+    palfreniersRepro: 10,
   },
   {
     harasId: "oujda",
